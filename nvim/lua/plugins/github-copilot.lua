@@ -38,6 +38,9 @@ return {
         complete = {
           insert = ''
         },
+        reset = {
+          normal = '<Leader>l',
+        }
       }
     },
     config = function(_, opts)

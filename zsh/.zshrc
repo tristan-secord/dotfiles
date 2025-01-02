@@ -1,3 +1,5 @@
+export PATH=/opt/homebrew/bin:$PATH
+
 ## Original ZSH Commands
 export PYENV_ROOT="$HOME/.pyenv"
 [[ -d $PYENV_ROOT/bin ]] && export PATH="$PYENV_ROOT/bin:$PATH"
@@ -9,7 +11,7 @@ source /Users/tristansecord/google-cloud-sdk/completion.zsh.inc
 # Github aliases
 alias dev="cd ~/Development/"
 alias gs="git status"
-alias gcm="git commit -m"
+alias gco="git commit -a -S -m"
 alias gc="git checkout"
 alias ga="git add"
 alias gp="git push"
@@ -29,7 +31,7 @@ alias tls="tmux list-sessions"
 . /opt/homebrew/opt/asdf/libexec/asdf.sh
 
 # If you come from bash you might have to change your $PATH.
-# export PATH=$HOME/bin:$HOME/.local/bin:/usr/local/bin:$PATH
+export PATH=$HOME/bin:$HOME/.local/bin:/usr/local/bin:$PATH
 
 # Path to your Oh My Zsh installation.
 export ZSH="$HOME/.oh-my-zsh"
