@@ -28,6 +28,12 @@ alias tas="tmux attach -t"
 alias td="tmux kill-session -t"
 alias tls="tmux list-sessions"
 
+
+## KIID
+# Pants Aliases
+alias pf="pants run kiid-sync-desktop:fmt && pants run kiid-sync-desktop:lint && pants run kiid-sync-desktop:test"
+alias pb="pants update-build-files tailor fmt lint check test ::"
+
 . /opt/homebrew/opt/asdf/libexec/asdf.sh
 
 # If you come from bash you might have to change your $PATH.
