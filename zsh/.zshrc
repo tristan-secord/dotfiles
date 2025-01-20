@@ -32,7 +32,19 @@ alias tls="tmux list-sessions"
 ## KIID
 # Pants Aliases
 alias pf="pants run kiid-sync-desktop:fmt && pants run kiid-sync-desktop:lint && pants run kiid-sync-desktop:test"
+alias pfl="pants run kiid-sync-desktop:lint"
+alias pff="pants run kiid-sync-dekstop:fmt"
+alias pft="pants run kiid-sync-desktop:test"
+alias pfd="pants run kiid-sync-desktop:dev"
 alias pb="pants update-build-files tailor fmt lint check test ::"
+alias pbl="pants lint ::"
+alias pbf="pants fmt ::"
+alias pbt="pants test ::"
+alias pbtailor="pants tailor ::"
+alias pbc="pants check ::"
+alias pbu="pants update-build-files ::"
+alias pbexp="pants export-codegen ::"
+alias pbgen="pants generate-lockfiles ::"
 
 . /opt/homebrew/opt/asdf/libexec/asdf.sh
 
