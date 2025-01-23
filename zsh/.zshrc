@@ -33,7 +33,7 @@ alias tls="tmux list-sessions"
 # Pants Aliases
 alias pf="pants run kiid-sync-desktop:fmt && pants run kiid-sync-desktop:lint && pants run kiid-sync-desktop:test"
 alias pfl="pants run kiid-sync-desktop:lint"
-alias pff="pants run kiid-sync-dekstop:fmt"
+alias pff="pants run kiid-sync-desktop:fmt"
 alias pft="pants run kiid-sync-desktop:test"
 alias pfd="pants run kiid-sync-desktop:dev"
 alias pb="pants update-build-files tailor fmt lint check test ::"
