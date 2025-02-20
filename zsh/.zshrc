@@ -20,6 +20,8 @@ alias grh="git reset --hard"
 alias gr="git fetch && git rebase -i"
 alias lg="lazygit"
 
+alias gresign="git rebase --exec 'git commit --amend --no-edit -n -S' -i"
+
 # Tmux Aliases
 alias tn="tmux new"
 alias tns="tmux new-session -A -s"
@@ -36,9 +38,9 @@ alias pfl="pants run kiid-sync-desktop:lint"
 alias pff="pants run kiid-sync-desktop:fmt"
 alias pft="pants run kiid-sync-desktop:test"
 alias pfd="pants run kiid-sync-desktop:dev"
-alias pb="pants update-build-files tailor fmt lint check test ::"
+alias pb="pants update-build-files tailor fmt fix lint check test ::"
 alias pbl="pants lint ::"
-alias pbf="pants fmt ::"
+alias pbf="pants fmt fix ::"
 alias pbt="pants test ::"
 alias pbtailor="pants tailor ::"
 alias pbc="pants check ::"
@@ -152,3 +154,4 @@ source $ZSH/oh-my-zsh.sh
 # Example aliases
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
+. "/Users/tristansecord/.deno/env"
