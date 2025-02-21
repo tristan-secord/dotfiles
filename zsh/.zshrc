@@ -19,6 +19,7 @@ alias gpr="git pull --rebase"
 alias grh="git reset --hard"
 alias gr="git fetch && git rebase -i"
 alias lg="lazygit"
+alias gpf="git push --force-with-lease origin" 
 
 alias gresign="git rebase --exec 'git commit --amend --no-edit -n -S' -i"
 
@@ -30,6 +31,8 @@ alias tas="tmux attach -t"
 alias td="tmux kill-session -t"
 alias tls="tmux list-sessions"
 
+# Random Aliases
+alias uuidcp="python -c 'import uuid; print(str(uuid.uuid4()), end=\"\")' | pbcopy"
 
 ## KIID
 # Pants Aliases
