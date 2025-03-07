@@ -3,3 +3,5 @@ github-copilot/
 k3d/
 zsh/.zsh_history
 zsh/.zcompdump*
+.dbee.json
+

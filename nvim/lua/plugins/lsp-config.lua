@@ -79,7 +79,7 @@ return {
 				},
 			})
 
-			lspconfig.pyright.setup({ capabilities = capabilities })
+			lspconfig.pyright.setup({capabilities = capabilities})
 
 			-- lspconfig.rust_analyzer.setup({
 			-- 	on_attach = function(client, bufnr)
