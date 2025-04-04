@@ -37,8 +37,7 @@ alias uuidcp="python -c 'import uuid; print(str(uuid.uuid4()), end=\"\")' | pbco
 ## KIID
 # Pants Aliases
 alias pc='pants --changed-since=origin/main --changed-dependents=transitive'
-alias pbexp="pants export-codegen ::"
-alias pbgen="pants generate-lockfiles ::"
+alias pgen="pants export-codegen generate-lockfiles ::"
 # Pants Frontend
 alias pf="pants run kiid-sync-desktop:fmt && pants run kiid-sync-desktop:lint && pants run kiid-sync-desktop:test"
 alias pfl="pants run kiid-sync-desktop:lint"
@@ -46,13 +45,13 @@ alias pff="pants run kiid-sync-desktop:fmt"
 alias pft="pants run kiid-sync-desktop:test"
 alias pfd="pants run kiid-sync-desktop:dev"
 # Pants backend
-alias pb="pc update-build-files tailor fix fmt lint check test"
-alias pbl="pc lint"
-alias pbf="pc fmt fix"
-alias pbt="pc test"
-alias pbtailor="pc tailor"
-alias pbc="pc check"
-alias pbu="pc update-build-files"
+alias pcall="pc update-build-files tailor fix fmt lint check test"
+alias pclint="pc lint"
+alias pcfmt="pc fmt fix"
+alias pctest="pc test"
+alias pctailor="pc tailor"
+alias pccheck="pc check"
+alias pcupdate="pc update-build-files"
 
 . /opt/homebrew/opt/asdf/libexec/asdf.sh
 
