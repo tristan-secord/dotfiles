@@ -5,8 +5,8 @@ return {
     cmd = "Copilot",
     event = "InsertEnter",
     opts = {
-      suggestion = { enabled = false },
-      panel = { enabled = false },
+      suggestion = { enabled = true },
+      panel = { enabled = true },
     },
     config = function(_, opts)
       require('copilot').setup(opts)
@@ -27,6 +27,7 @@ return {
       { "zbirenbaum/copilot.lua" },
       { "nvim-lua/plenary.nvim" },
     },
+    build = "make tiktoken",
     opts = {
       debug = true,
       chat_autocomplete = true,
@@ -36,12 +37,9 @@ return {
           insert = '<C-CR>'
         },
         complete = {
-          insert = ''
+          insert = '<C-Space>'
         },
-        reset = {
-          normal = '<Leader>l',
-        }
-      }
+      },
     },
     config = function(_, opts)
       require("CopilotChat").setup(opts)
@@ -57,15 +55,14 @@ return {
       "CopilotChatLoad",
       "CopilotChatDebugInfo",
       "CopilotChatModels",
+      "CopilotChatAgents",
       "CopilotChatExplain",
       "CopilotChatReview",
       "CopilotChatFix",
       "CopilotChatOptimize",
       "CopilotChatDocs",
       "CopilotChatTests",
-      "CopilotChatFixDiagnostic",
       "CopilotChatCommit",
-      "CopilotChatCommitStaged"
     },
     keys = {
       {
@@ -117,12 +114,6 @@ return {
         "<leader>ct",
         "<cmd>CopilotChatTests<cr>",
         desc = "Generate tests for selection",
-        mode = { "n", "v" }
-      },
-      {
-        "<leader>ci",
-        "<cmd>CopilotChatFixDiagnostic<cr>",
-        desc = "Assist with diagnostic",
         mode = { "n", "v" }
       },
       {
