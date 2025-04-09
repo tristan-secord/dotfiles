@@ -52,6 +52,8 @@ alias pctest="pc test"
 alias pctailor="pc tailor"
 alias pccheck="pc check"
 alias pcupdate="pc update-build-files"
+# Pants Helpers
+alias pantsdkill="ps aux | awk '/pantsd \[/ { print $2 }' | xargs kill"
 
 . /opt/homebrew/opt/asdf/libexec/asdf.sh
 
@@ -127,9 +129,10 @@ ZSH_THEME="robbyrussell"
 # Custom plugins may be added to $ZSH_CUSTOM/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(git)
+plugins=(git kube-ps1)
 
 source $ZSH/oh-my-zsh.sh
+PROMPT='$(kube_ps1)'$PROMPT;kubeon
 
 # User configuration
 
