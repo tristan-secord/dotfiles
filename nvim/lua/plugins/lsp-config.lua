@@ -29,6 +29,12 @@ return {
 	{
 		"neovim/nvim-lspconfig",
 		lazy = false,
+    dependencies = {
+      { "folke/neodev.nvim", opts = { pathStrict = true } },
+      "williamboman/mason.nvim",
+      "williamboman/mason-lspconfig.nvim",
+      "hrsh7th/cmp-nvim-lsp"
+    },
 		config = function()
 			local capabilities = require("cmp_nvim_lsp").default_capabilities()
 
@@ -36,79 +42,26 @@ return {
 
 			lspconfig.lua_ls.setup({ capabilities = capabilities })
 
-			lspconfig.ts_ls.setup({
-				capabilities = capabilities,
-				plugins = {
-					{
-						name = "@vue/typescript-plugin",
-						location = vim.fn.stdpath("data")
-							.. "/mason/packages/vue-language-server/node_modules/@vue/language-server",
-						languages = { "vue" },
-					},
-				},
-			})
+			lspconfig.pyright.setup({ capabilities = capabilities })
 
-			lspconfig.volar.setup({
-				capabilities = capabilities,
-				init_options = {
-					vue = {
-						hybridMode = false,
-					},
-				},
-				settings = {
-					typescript = {
-						inlayHints = {
-							enumMemberValues = {
-								enabled = true,
-							},
-							functionLikeReturnTypes = {
-								enabled = true,
-							},
-							propertyDeclarationTypes = {
-								enabled = true,
-							},
-							parameterTypes = {
-								enabled = true,
-								suppressWhenArgumentMatchesName = true,
-							},
-							variableTypes = {
-								enabled = true,
-							},
-						},
-					},
-				},
-			})
+      lspconfig.tailwindcss.setup({ capabilities = capabilities })
 
-			lspconfig.pyright.setup({capabilities = capabilities})
+      lspconfig.rust_analyzer.setup({
+        capabilities = capabilities,
+        settings = {
+          ["rust-analyzer"] = {
+        checkOnSave = {
+          command = "clippy",
+        },
+          },
+        },
+      })
 
-			-- lspconfig.rust_analyzer.setup({
-			-- 	on_attach = function(client, bufnr)
-			-- 		vim.lsp.inlay_hint.enable(true, { bufnr = bufnr })
-			-- 	end,
-			-- 	settings = {
-			-- 		["rust-analyzer"] = {
-			-- 			imports = {
-			-- 				granularity = {
-			-- 					group = "module",
-			-- 				},
-			-- 				prefix = "self",
-			-- 			},
-			-- 			cargo = {
-			-- 				buildScripts = {
-			-- 					enable = true,
-			-- 				},
-			-- 			},
-			-- 			procMacro = {
-			-- 				enable = true,
-			-- 			},
-			-- 		},
-			-- 	},
-			-- })
-			--
 
       vim.keymap.set("n", "K", vim.lsp.buf.hover, {})
 			vim.keymap.set("n", "gd", vim.lsp.buf.definition, {})
 			vim.keymap.set({ "n", "v" }, "<leader>ca", vim.lsp.buf.code_action, {})
 		end,
 	},
+  { "stevanmilic/nvim-lspimport" }
 }

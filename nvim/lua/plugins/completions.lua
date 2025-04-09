@@ -11,6 +11,13 @@ return {
   },
   {
     "hrsh7th/nvim-cmp",
+    dependencies = {
+      "hrsh7th/cmp-nvim-lsp",
+      "hrsh7th/cmp-buffer",
+      "hrsh7th/cmp-path",
+      "hrsh7th/cmp-nvim-lsp-signature-help",
+      "saadparwaiz1/cmp_luasnip",
+    },
     config = function()
       local cmp = require("cmp")
       require("luasnip.loaders.from_vscode").lazy_load()
@@ -36,7 +43,16 @@ return {
           { name = "copilot" },
           { name = "nvim_lsp" },
           { name = "luasnip" }, -- For luasnip users.
-          { name = "buffer" },
+          {
+            name = "buffer",
+            option = {
+              get_bufnrs = function ()
+                return vim.api.nvim_list_bufs()
+              end
+            }
+          },
+          { name = "path" },
+          { name = "nvim_lsp_signature_help" },
         })
       })
     end,

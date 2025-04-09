@@ -14,7 +14,8 @@ return {
           key = "<C-h>",
           command = "split"
         }
-      }
+      },
+      order_buffers = "lastused"
     })
 
     local opts = {noremap = true}
