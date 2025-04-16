@@ -39,6 +39,10 @@ return {
         complete = {
           insert = '<C-Space>'
         },
+        reset = {
+          normal = '<C-q>',
+          insert = '<C-q>'
+        }
       },
     },
     config = function(_, opts)
