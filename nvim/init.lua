@@ -1,3 +1,10 @@
+vim.opt.iskeyword:remove("_")
+
+vim.api.nvim_create_autocmd({ "VimResized", "WinEnter", "WinNew" }, {
+  pattern = "*",
+  command = "wincmd ="
+})
+
 -- Bootstrap lazy.nvim
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
 if not (vim.uv or vim.loop).fs_stat(lazypath) then
