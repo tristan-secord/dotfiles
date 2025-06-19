@@ -9,7 +9,7 @@ return {
 		"williamboman/mason-lspconfig.nvim",
 		config = function()
 			require("mason-lspconfig").setup({
-				ensure_installed = { "lua_ls", "ts_ls", "volar", "pyright", "elixirls", "rust_analyzer" },
+				ensure_installed = { "lua_ls", "elixirls", "pyright" },
 			})
 		end,
 	},
@@ -24,6 +24,7 @@ return {
 			})
 
 			vim.keymap.set("", "<leader>l", require("lsp_lines").toggle, { desc = "Toggle lsp lines" })
+      vim.keymap.set('n', '<space>e', vim.diagnostic.open_float, { desc = "Open diagnostic float" })
 		end,
 	},
 	{
@@ -39,12 +40,6 @@ return {
 			local capabilities = require("cmp_nvim_lsp").default_capabilities()
 
 			local lspconfig = require("lspconfig")
-
-			lspconfig.lua_ls.setup({ capabilities = capabilities })
-
-			lspconfig.pyright.setup({ capabilities = capabilities })
-
-      lspconfig.tailwindcss.setup({ capabilities = capabilities })
 
       lspconfig.rust_analyzer.setup({
         capabilities = capabilities,
