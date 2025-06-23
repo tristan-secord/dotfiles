@@ -9,6 +9,7 @@ return {
 		"williamboman/mason-lspconfig.nvim",
 		config = function()
 			require("mason-lspconfig").setup({
+        automatic_installation = true,
 				ensure_installed = { "lua_ls", "elixirls", "pyright" },
 			})
 		end,
@@ -58,5 +59,9 @@ return {
 			vim.keymap.set({ "n", "v" }, "<leader>ca", vim.lsp.buf.code_action, {})
 		end,
 	},
-  { "stevanmilic/nvim-lspimport" }
+  {
+    "stevanmilic/nvim-lspimport",
+    -- https://github.com/stevanmilic/nvim-lspimport/pull/9/commits/2c0dfc4674493ca3ef3eddca26480e124a3f2643
+    commit = "2c0dfc4674493ca3ef3eddca26480e124a3f2643"
+  }
 }
