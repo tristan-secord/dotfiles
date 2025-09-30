@@ -5,6 +5,15 @@ export PYENV_ROOT="$HOME/.pyenv"
 [[ -d $PYENV_ROOT/bin ]] && export PATH="$PYENV_ROOT/bin:$PATH"
 eval "$(pyenv init -)"
 
+## JAVA
+export JAVA_HOME=$(/usr/libexec/java_home -v 17)
+export PATH="$JAVA_HOME/bin:$PATH"
+
+## ANDROID
+export ANDROID_SDK_ROOT="$HOME/Library/Android/sdk"
+export ANDROID_HOME="$ANDROID_SDK_ROOT"
+export PATH="$ANDROID_SDK_ROOT/platform-tools:$ANDROID_SDK_ROOT/emulator:$ANDROID_SDK_ROOT/cmdline-tools/latest/bin:$PATH"
+
 source /Users/tristansecord/google-cloud-sdk/path.zsh.inc
 source /Users/tristansecord/google-cloud-sdk/completion.zsh.inc
 
@@ -50,10 +59,16 @@ alias pcupdate="pc update-build-files"
 alias pantsdkill="ps aux | awk '/pantsd \[/ { print $2 }' | xargs kill"
 
 # Frontend Aliases
-alias frontall="cd ~/Development/kiid && bin/nx lint web && bin/nx format web --fix && bin/nx test web"
+alias frontall="cd ~/Development/kiid && bin/nx lint web && bin/nx format web --fix && bin/nx test web && bin/nx lint core && bin/nx format core --fix && bin/nx test core && bin/nx format mobile --fix && bin/nx lint mobile"
 alias frontlint="cd ~/Development/kiid && bin/nx lint web"
 alias frontfmt="cd ~/Development/kiid && bin/nx format web --fix"
 alias fronttest="cd ~/Development/kiid && bin/nx test web"
+alias fronttest="cd ~/Development/kiid && git clean -fdx && pnpm install"
+
+# Mobile Aliases
+alias mobile-ios="cd ~/Development/kiid/frontend && npx nx run-ios mobile"
+alias mobile-android="cd ~/Development/kiid/frontend && npx nx run-android mobile"
+alias mobile-prebuild="cd ~/Development/kiid/frontend && npx nx prebuild mobile --clean"
 
 . /opt/homebrew/opt/asdf/libexec/asdf.sh
 
@@ -68,9 +83,6 @@ export ZSH="$HOME/.oh-my-zsh"
 # to know which specific one was loaded, run: echo $RANDOM_THEME
 # See https://github.com/ohmyzsh/ohmyzsh/wiki/Themes
 ZSH_THEME="robbyrussell"
-
-# FZF
-source <(fzf --zsh)
 
 
 # Set list of themes to pick from when loading at random
