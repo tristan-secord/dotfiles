@@ -2,7 +2,7 @@
 font-family = Berkeley Nerd Font
 font-size = 10
 
-theme = catppuccin-mocha
+theme = "Catppuccin Mocha"
 
 shell-integration-features = no-cursor,sudo,no-title
 adjust-cell-height = 25%

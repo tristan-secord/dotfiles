@@ -20,19 +20,7 @@ source /Users/tristansecord/google-cloud-sdk/completion.zsh.inc
 ## OPENAI
 [ -f ~/.config/openai.env ] && source ~/.config/openai.env
 
-# Github aliases
-alias dev="cd ~/Development/"
-alias gs="git status"
-alias gco="git commit -a -S -m"
-alias gc="git checkout"
-alias ga="git add"
-alias gp="git push"
-alias gpr="git pull --rebase"
-alias grh="git reset --hard"
-alias gr="git fetch && git rebase -i"
-alias lg="lazygit"
-alias gpf="git push --force-with-lease origin" 
-
+## GITHUB ALIAS
 alias gresign="git rebase --exec 'git commit --amend --no-edit -n -S' -i"
 
 # Tmux Aliases
@@ -159,31 +147,32 @@ _osc_bg() {
 }
 
 # reset background to terminal theme default via OSC 111 (no args)
-_osc_bg_reset() {
-  printf '\033]111\007'
-}
+_osc_bg() { printf '\033]11;%s\007' "$1"; }        # OSC 11 set background
+_osc_bg_reset() { printf '\033]111\007'; }         # OSC 111 reset
 
-# kube integration
+# Load kube-ps1 if present
 if [ -f "/opt/homebrew/share/kube-ps1.sh" ] || [ -f "/usr/local/opt/kube-ps1/share/kube-ps1.sh" ]; then
   source "/opt/homebrew/share/kube-ps1.sh" 2>/dev/null || \
   source "/usr/local/opt/kube-ps1/share/kube-ps1.sh" 2>/dev/null
+  setopt promptsubst
 
-  k_set_prod_background() {
+  # Change background *before* each prompt is drawn
+  k_set_bg_precmd() {
     if [[ "$KUBE_PS1_CONTEXT" == *prod* ]]; then
-      _osc_bg "#550000"     # dark red in prod
+      _osc_bg "#550000"
     else
-      _osc_bg_reset         # back to Ghostty theme
+      _osc_bg_reset
     fi
   }
+  # Register the hook (preserve other precmds)
+  typeset -ga precmd_functions
+  (( ${precmd_functions[(I)k_set_bg_precmd]} )) || precmd_functions+=(k_set_bg_precmd)
 
-  kube_prompt_info() {
-    echo "$(kube_ps1)$(k_set_prod_background)"
-  }
-
-  # your original prompt, swapped to call kube_prompt_info
-  PROMPT='$(kube_prompt_info)'$PROMPT;kubeon
+  # Prompt: kube-ps1 first, then your existing prompt
+  PROMPT='$(kube_ps1)'"$PROMPT"
+  kubeon
 else
-  PROMPT=$PROMPT;kubeon
+  PROMPT="$PROMPT"
 fi
 
 # User configuration
