@@ -17,6 +17,9 @@ export PATH="$ANDROID_SDK_ROOT/platform-tools:$ANDROID_SDK_ROOT/emulator:$ANDROI
 source /Users/tristansecord/google-cloud-sdk/path.zsh.inc
 source /Users/tristansecord/google-cloud-sdk/completion.zsh.inc
 
+## OPENAI
+[ -f ~/.config/openai.env ] && source ~/.config/openai.env
+
 # Github aliases
 alias dev="cd ~/Development/"
 alias gs="git status"
@@ -148,7 +151,40 @@ ZSH_THEME="robbyrussell"
 plugins=(git kube-ps1)
 
 source $ZSH/oh-my-zsh.sh
-PROMPT='$(kube_ps1)'$PROMPT;kubeon
+
+# --- Kube prompt for Ghostty + tmux ---
+_osc_bg() {
+  local color="$1" # e.g., "#550000"
+  printf '\033]11;%s\007' "$color"
+}
+
+# reset background to terminal theme default via OSC 111 (no args)
+_osc_bg_reset() {
+  printf '\033]111\007'
+}
+
+# kube integration
+if [ -f "/opt/homebrew/share/kube-ps1.sh" ] || [ -f "/usr/local/opt/kube-ps1/share/kube-ps1.sh" ]; then
+  source "/opt/homebrew/share/kube-ps1.sh" 2>/dev/null || \
+  source "/usr/local/opt/kube-ps1/share/kube-ps1.sh" 2>/dev/null
+
+  k_set_prod_background() {
+    if [[ "$KUBE_PS1_CONTEXT" == *prod* ]]; then
+      _osc_bg "#550000"     # dark red in prod
+    else
+      _osc_bg_reset         # back to Ghostty theme
+    fi
+  }
+
+  kube_prompt_info() {
+    echo "$(kube_ps1)$(k_set_prod_background)"
+  }
+
+  # your original prompt, swapped to call kube_prompt_info
+  PROMPT='$(kube_prompt_info)'$PROMPT;kubeon
+else
+  PROMPT=$PROMPT;kubeon
+fi
 
 # User configuration
 

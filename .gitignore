@@ -5,3 +5,5 @@ zsh/.zsh_history
 zsh/.zcompdump*
 .dbee.json
 
+openai.env
+
