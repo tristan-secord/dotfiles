@@ -22,6 +22,7 @@ source /Users/tristansecord/google-cloud-sdk/completion.zsh.inc
 
 ## GITHUB ALIAS
 alias gresign="git rebase --exec 'git commit --amend --no-edit -n -S' -i"
+alias lg="lazygit"
 
 # Tmux Aliases
 alias tn="tmux new"
