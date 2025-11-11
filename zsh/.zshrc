@@ -24,6 +24,9 @@ source /Users/tristansecord/google-cloud-sdk/completion.zsh.inc
 alias gresign="git rebase --exec 'git commit --amend --no-edit -n -S' -i"
 alias lg="lazygit"
 
+## Docker Alias
+alias dprune='docker image prune -a -f --filter "until=168h" && docker builder prune -a -f'
+
 # Tmux Aliases
 alias tn="tmux new"
 alias tns="tmux new-session -A -s"
