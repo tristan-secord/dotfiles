@@ -54,7 +54,7 @@ alias pcupdate="pc update-build-files"
 alias pantsdkill="ps aux | awk '/pantsd \[/ { print $2 }' | xargs kill"
 
 # Frontend Aliases
-alias frontall="cd ~/Development/kiid && bin/nx lint web && bin/nx format web --fix && bin/nx test web && bin/nx lint core && bin/nx format core --fix && bin/nx test core && bin/nx format mobile --fix && bin/nx lint mobile"
+alias frontall="cd ~/Development/kiid && bin/nx lint web && bin/nx format web --fix && bin/nx test web && bin/nx lint core && bin/nx format core --fix && bin/nx test core && bin/nx format mobile --fix && bin/nx lint mobile && bin/nx test mobile"
 alias frontlint="cd ~/Development/kiid && bin/nx lint web"
 alias frontfmt="cd ~/Development/kiid && bin/nx format web --fix"
 alias fronttest="cd ~/Development/kiid && bin/nx test web"
