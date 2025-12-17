@@ -28,37 +28,44 @@ return {
       vim.keymap.set('n', '<space>e', vim.diagnostic.open_float, { desc = "Open diagnostic float" })
 		end,
 	},
-	{
-		"neovim/nvim-lspconfig",
-		lazy = false,
+  {
+    "neovim/nvim-lspconfig",
+    lazy = false,
     dependencies = {
       { "folke/neodev.nvim", opts = { pathStrict = true } },
       "williamboman/mason.nvim",
       "williamboman/mason-lspconfig.nvim",
-      "hrsh7th/cmp-nvim-lsp"
+      "hrsh7th/cmp-nvim-lsp",
     },
-		config = function()
-			local capabilities = require("cmp_nvim_lsp").default_capabilities()
+    config = function()
+      local capabilities = require("cmp_nvim_lsp").default_capabilities()
 
-			local lspconfig = require("lspconfig")
-
-      lspconfig.rust_analyzer.setup({
+      -- Configure servers (new API)
+      vim.lsp.config("rust_analyzer", {
         capabilities = capabilities,
         settings = {
           ["rust-analyzer"] = {
-        checkOnSave = {
-          command = "clippy",
-        },
+            checkOnSave = {
+              command = "clippy",
+            },
           },
         },
       })
 
+      -- If you want to pass capabilities to others too:
+      vim.lsp.config("lua_ls", { capabilities = capabilities })
+      vim.lsp.config("pyright", { capabilities = capabilities })
+      vim.lsp.config("elixirls", { capabilities = capabilities })
 
+      -- Enable servers (new API)
+      vim.lsp.enable({ "rust_analyzer", "lua_ls", "pyright", "elixirls" })
+
+      -- Keymaps
       vim.keymap.set("n", "K", vim.lsp.buf.hover, {})
-			vim.keymap.set("n", "gd", vim.lsp.buf.definition, {})
-			vim.keymap.set({ "n", "v" }, "<leader>ca", vim.lsp.buf.code_action, {})
-		end,
-	},
+      vim.keymap.set("n", "gd", vim.lsp.buf.definition, {})
+      vim.keymap.set({ "n", "v" }, "<leader>ca", vim.lsp.buf.code_action, {})
+    end,
+  },
   {
     "stevanmilic/nvim-lspimport",
     -- https://github.com/stevanmilic/nvim-lspimport/pull/9/commits/2c0dfc4674493ca3ef3eddca26480e124a3f2643
