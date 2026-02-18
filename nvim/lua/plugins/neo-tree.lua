@@ -10,6 +10,12 @@ return {
 		vim.keymap.set("n", "<leader>nn", ":Neotree toggle<CR>")
 
     require("neo-tree").setup({
+      filesystem = {
+        follow_current_file = {
+          enabled = true,
+          leave_dirs_open = false,
+        },
+      },
       event_handlers = {
         {
           event = "file_open_requested",

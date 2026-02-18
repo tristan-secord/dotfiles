@@ -20,6 +20,12 @@ source /Users/tristansecord/google-cloud-sdk/completion.zsh.inc
 ## OPENAI
 [ -f ~/.config/openai.env ] && source ~/.config/openai.env
 
+## NVM
+export NVM_DIR="$HOME/.nvm"
+[ -s "$(brew --prefix nvm)/nvm.sh" ] && \. "$(brew --prefix nvm)/nvm.sh" # This loads nvm
+[ -s "$(brew --prefix nvm)/etc/bash_completion.d/nvm" ] && \. "$(brew --prefix nvm)/etc/bash_completion.d/nvm" # This loads nvm bash_completion
+
+
 ## GITHUB ALIAS
 alias gresign="git rebase --exec 'git commit --amend --no-edit -n -S' -i"
 alias lg="lazygit"
