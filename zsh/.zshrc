@@ -1,21 +1,24 @@
 export PATH=/opt/homebrew/bin:$PATH
 
-## Original ZSH Commands
 export PYENV_ROOT="$HOME/.pyenv"
 [[ -d $PYENV_ROOT/bin ]] && export PATH="$PYENV_ROOT/bin:$PATH"
-eval "$(pyenv init -)"
+if command -v pyenv >/dev/null 2>&1; then
+  eval "$(pyenv init -)"
+fi
 
 ## JAVA
-export JAVA_HOME=$(/usr/libexec/java_home -v 17)
-export PATH="$JAVA_HOME/bin:$PATH"
+if /usr/libexec/java_home -v 17 >/dev/null 2>&1; then
+  export JAVA_HOME=$(/usr/libexec/java_home -v 17)
+  export PATH="$JAVA_HOME/bin:$PATH"
+fi
 
 ## ANDROID
 export ANDROID_SDK_ROOT="$HOME/Library/Android/sdk"
 export ANDROID_HOME="$ANDROID_SDK_ROOT"
 export PATH="$ANDROID_SDK_ROOT/platform-tools:$ANDROID_SDK_ROOT/emulator:$ANDROID_SDK_ROOT/cmdline-tools/latest/bin:$PATH"
 
-source /Users/tristansecord/google-cloud-sdk/path.zsh.inc
-source /Users/tristansecord/google-cloud-sdk/completion.zsh.inc
+[[ -f "$HOME/google-cloud-sdk/path.zsh.inc" ]] && source "$HOME/google-cloud-sdk/path.zsh.inc"
+[[ -f "$HOME/google-cloud-sdk/completion.zsh.inc" ]] && source "$HOME/google-cloud-sdk/completion.zsh.inc"
 
 ## OPENAI
 [ -f ~/.config/openai.env ] && source ~/.config/openai.env
@@ -71,20 +74,17 @@ alias mobile-ios="cd ~/Development/kiid/frontend && npx nx run-ios mobile"
 alias mobile-android="cd ~/Development/kiid/frontend && npx nx run-android mobile"
 alias mobile-prebuild="cd ~/Development/kiid/frontend && npx nx prebuild mobile --clean"
 
-. /opt/homebrew/opt/asdf/libexec/asdf.sh
+# ASDF
+[[ -f "/opt/homebrew/opt/asdf/libexec/asdf.sh" ]] && . "/opt/homebrew/opt/asdf/libexec/asdf.sh"
 
 # If you come from bash you might have to change your $PATH.
 export PATH=$HOME/bin:$HOME/.local/bin:/usr/local/bin:$PATH
 
 # Path to your Oh My Zsh installation.
 export ZSH="$HOME/.oh-my-zsh"
-
-# Set name of the theme to load --- if set to "random", it will
-# load a random theme each time Oh My Zsh is loaded, in which case,
-# to know which specific one was loaded, run: echo $RANDOM_THEME
-# See https://github.com/ohmyzsh/ohmyzsh/wiki/Themes
 ZSH_THEME="robbyrussell"
-
+plugins=(git kube-ps1)
+[[ -f "$ZSH/oh-my-zsh.sh" ]] && source "$ZSH/oh-my-zsh.sh"
 
 # Set list of themes to pick from when loading at random
 # Setting this variable when ZSH_THEME=random will cause zsh to load
@@ -146,9 +146,6 @@ ZSH_THEME="robbyrussell"
 # Custom plugins may be added to $ZSH_CUSTOM/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(git kube-ps1)
-
-source $ZSH/oh-my-zsh.sh
 
 # --- Kube prompt for Ghostty + tmux ---
 _osc_bg() {
@@ -210,7 +207,5 @@ fi
 # - $ZSH_CUSTOM/macos.zsh
 # For a full list of active aliases, run `alias`.
 #
-# Example aliases
-# alias zshconfig="mate ~/.zshrc"
-# alias ohmyzsh="mate ~/.oh-my-zsh"
-. "/Users/tristansecord/.deno/env"
+[[ -f "$HOME/.deno/env" ]] && . "$HOME/.deno/env"
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
