@@ -23,11 +23,15 @@ export PATH="$ANDROID_SDK_ROOT/platform-tools:$ANDROID_SDK_ROOT/emulator:$ANDROI
 ## OPENAI
 [ -f ~/.config/openai.env ] && source ~/.config/openai.env
 
-## NVM
+## NVM (Homebrew) — fast
 export NVM_DIR="$HOME/.nvm"
-[ -s "$(brew --prefix nvm)/nvm.sh" ] && \. "$(brew --prefix nvm)/nvm.sh" # This loads nvm
-[ -s "$(brew --prefix nvm)/etc/bash_completion.d/nvm" ] && \. "$(brew --prefix nvm)/etc/bash_completion.d/nvm" # This loads nvm bash_completion
+NVM_HOMEBREW="/opt/homebrew/opt/nvm"
+[ -s "$NVM_HOMEBREW/nvm.sh" ] && . "$NVM_HOMEBREW/nvm.sh"
+# optional completion:
+[ -s "$NVM_HOMEBREW/etc/bash_completion.d/nvm" ] && . "$NVM_HOMEBREW/etc/bash_completion.d/nvm"
 
+## DIRENV
+eval "$(direnv hook zsh)"
 
 ## GITHUB ALIAS
 alias gresign="git rebase --exec 'git commit --amend --no-edit -n -S' -i"
@@ -85,6 +89,7 @@ export ZSH="$HOME/.oh-my-zsh"
 ZSH_THEME="robbyrussell"
 plugins=(git kube-ps1)
 [[ -f "$ZSH/oh-my-zsh.sh" ]] && source "$ZSH/oh-my-zsh.sh"
+PROMPT="${PROMPT//%c/%~}" 
 
 # Set list of themes to pick from when loading at random
 # Setting this variable when ZSH_THEME=random will cause zsh to load
@@ -181,6 +186,8 @@ if [ -f "/opt/homebrew/share/kube-ps1.sh" ] || [ -f "/usr/local/opt/kube-ps1/sha
 else
   PROMPT="$PROMPT"
 fi
+
+export GPG_TTY=$(tty)
 
 # User configuration
 

@@ -6,6 +6,9 @@ zsh/.zcompdump*
 .dbee.json
 
 tmux/plugins/
+Questrade/
+uv/
+gh/
 
 openai.env
 
