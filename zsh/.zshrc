@@ -89,8 +89,6 @@ export ZSH="$HOME/.oh-my-zsh"
 ZSH_THEME="robbyrussell"
 plugins=(git kube-ps1)
 [[ -f "$ZSH/oh-my-zsh.sh" ]] && source "$ZSH/oh-my-zsh.sh"
-PROMPT="${PROMPT//%c/%~}" 
-
 # Set list of themes to pick from when loading at random
 # Setting this variable when ZSH_THEME=random will cause zsh to load
 # a theme from this variable instead of looking in $ZSH/themes/
@@ -153,38 +151,29 @@ PROMPT="${PROMPT//%c/%~}"
 # Add wisely, as too many plugins slow down shell startup.
 
 # --- Kube prompt for Ghostty + tmux ---
-_osc_bg() {
-  local color="$1" # e.g., "#550000"
-  printf '\033]11;%s\007' "$color"
-}
-
-# reset background to terminal theme default via OSC 111 (no args)
 _osc_bg() { printf '\033]11;%s\007' "$1"; }        # OSC 11 set background
 _osc_bg_reset() { printf '\033]111\007'; }         # OSC 111 reset
 
-# Load kube-ps1 if present
+setopt promptsubst
+
+k_set_bg_precmd() {
+  if [[ "$KUBE_PS1_CONTEXT" == *prod* ]]; then
+    _osc_bg "#550000"
+  else
+    _osc_bg_reset
+  fi
+}
+typeset -ga precmd_functions
+(( ${precmd_functions[(I)k_set_bg_precmd]} )) || precmd_functions+=(k_set_bg_precmd)
+
+# Set prompt directly with %~ (full path) instead of %c (last component only)
 if [ -f "/opt/homebrew/share/kube-ps1.sh" ] || [ -f "/usr/local/opt/kube-ps1/share/kube-ps1.sh" ]; then
   source "/opt/homebrew/share/kube-ps1.sh" 2>/dev/null || \
   source "/usr/local/opt/kube-ps1/share/kube-ps1.sh" 2>/dev/null
-  setopt promptsubst
-
-  # Change background *before* each prompt is drawn
-  k_set_bg_precmd() {
-    if [[ "$KUBE_PS1_CONTEXT" == *prod* ]]; then
-      _osc_bg "#550000"
-    else
-      _osc_bg_reset
-    fi
-  }
-  # Register the hook (preserve other precmds)
-  typeset -ga precmd_functions
-  (( ${precmd_functions[(I)k_set_bg_precmd]} )) || precmd_functions+=(k_set_bg_precmd)
-
-  # Prompt: kube-ps1 first, then your existing prompt
-  PROMPT='$(kube_ps1)'"$PROMPT"
+  PROMPT='$(kube_ps1)%(?:%{$fg_bold[green]%}%1{➜%} :%{$fg_bold[red]%}%1{➜%} ) %{$fg[cyan]%}%~%{$reset_color%} $(git_prompt_info)'
   kubeon
 else
-  PROMPT="$PROMPT"
+  PROMPT='%(?:%{$fg_bold[green]%}%1{➜%} :%{$fg_bold[red]%}%1{➜%} ) %{$fg[cyan]%}%~%{$reset_color%} $(git_prompt_info)'
 fi
 
 export GPG_TTY=$(tty)
