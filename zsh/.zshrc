@@ -1,11 +1,5 @@
 export PATH=/opt/homebrew/bin:$PATH
 
-export PYENV_ROOT="$HOME/.pyenv"
-[[ -d $PYENV_ROOT/bin ]] && export PATH="$PYENV_ROOT/bin:$PATH"
-if command -v pyenv >/dev/null 2>&1; then
-  eval "$(pyenv init -)"
-fi
-
 ## JAVA
 if /usr/libexec/java_home -v 17 >/dev/null 2>&1; then
   export JAVA_HOME=$(/usr/libexec/java_home -v 17)
@@ -26,9 +20,17 @@ export PATH="$ANDROID_SDK_ROOT/platform-tools:$ANDROID_SDK_ROOT/emulator:$ANDROI
 ## NVM (Homebrew) — fast
 export NVM_DIR="$HOME/.nvm"
 NVM_HOMEBREW="/opt/homebrew/opt/nvm"
-[ -s "$NVM_HOMEBREW/nvm.sh" ] && . "$NVM_HOMEBREW/nvm.sh"
-# optional completion:
-[ -s "$NVM_HOMEBREW/etc/bash_completion.d/nvm" ] && . "$NVM_HOMEBREW/etc/bash_completion.d/nvm"
+
+load_nvm() {
+  unset -f node npm npx pnpm yarn load_nvm
+  [ -s "$NVM_HOMEBREW/nvm.sh" ] && . "$NVM_HOMEBREW/nvm.sh"
+}
+
+node() { load_nvm; node "$@"; }
+npm()  { load_nvm; npm "$@"; }
+npx()  { load_nvm; npx "$@"; }
+pnpm() { load_nvm; pnpm "$@"; }
+yarn() { load_nvm; yarn "$@"; }
 
 ## DIRENV
 if command -v direnv >/dev/null 2>&1; then
@@ -59,26 +61,10 @@ alias pc='pants --changed-since=origin/main --changed-dependents=transitive'
 alias pgen="pants export-codegen generate-lockfiles ::"
 # Pants backend
 alias pcall="pc update-build-files tailor fix fmt lint check test"
-alias pclint="pc lint"
-alias pcfmt="pc fmt fix"
-alias pctest="pc test"
-alias pctailor="pc tailor"
-alias pccheck="pc check"
-alias pcupdate="pc update-build-files"
 # Pants Helpers
 alias pantsdkill="ps aux | awk '/pantsd \[/ { print $2 }' | xargs kill"
-
 # Frontend Aliases
 alias frontall="cd ~/Development/kiid && bin/nx lint web --max-warnings=0 && bin/nx format web --fix && bin/nx test web && bin/nx lint core --max-warnings=0 && bin/nx format core --fix && bin/nx test core && bin/nx format mobile --fix && bin/nx lint mobile --max-warnings=0 && bin/nx test mobile && bin/nx typecheck mobile"
-alias frontlint="cd ~/Development/kiid && bin/nx lint web"
-alias frontfmt="cd ~/Development/kiid && bin/nx format web --fix"
-alias fronttest="cd ~/Development/kiid && bin/nx test web"
-alias fronttest="cd ~/Development/kiid && git clean -fdx && pnpm install"
-
-# Mobile Aliases
-alias mobile-ios="cd ~/Development/kiid/frontend && npx nx run-ios mobile"
-alias mobile-android="cd ~/Development/kiid/frontend && npx nx run-android mobile"
-alias mobile-prebuild="cd ~/Development/kiid/frontend && npx nx prebuild mobile --clean"
 
 # ASDF
 [[ -f "/opt/homebrew/opt/asdf/libexec/asdf.sh" ]] && . "/opt/homebrew/opt/asdf/libexec/asdf.sh"
@@ -133,7 +119,7 @@ plugins=(git kube-ps1)
 # Uncomment the following line if you want to disable marking untracked files
 # under VCS as dirty. This makes repository status check for large repositories
 # much, much faster.
-# DISABLE_UNTRACKED_FILES_DIRTY="true"
+DISABLE_UNTRACKED_FILES_DIRTY="true"
 
 # Uncomment the following line if you want to change the command execution time
 # stamp shown in the history command output.
@@ -178,7 +164,7 @@ else
   PROMPT='%(?:%{$fg_bold[green]%}%1{➜%} :%{$fg_bold[red]%}%1{➜%} ) %{$fg[cyan]%}%~%{$reset_color%} $(git_prompt_info)'
 fi
 
-export GPG_TTY=$(tty)
+[[ -t 1 ]] && export GPG_TTY=$(tty)
 
 # User configuration
 
@@ -206,4 +192,3 @@ export GPG_TTY=$(tty)
 # For a full list of active aliases, run `alias`.
 #
 [[ -f "$HOME/.deno/env" ]] && . "$HOME/.deno/env"
-[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
