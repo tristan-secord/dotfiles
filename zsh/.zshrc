@@ -31,7 +31,9 @@ NVM_HOMEBREW="/opt/homebrew/opt/nvm"
 [ -s "$NVM_HOMEBREW/etc/bash_completion.d/nvm" ] && . "$NVM_HOMEBREW/etc/bash_completion.d/nvm"
 
 ## DIRENV
-eval "$(direnv hook zsh)"
+if command -v direnv >/dev/null 2>&1; then
+  eval "$(direnv hook zsh)"
+fi
 
 ## GITHUB ALIAS
 alias gresign="git rebase --exec 'git commit --amend --no-edit -n -S' -i"
