@@ -5,7 +5,7 @@ zsh/.zsh_history
 zsh/.zcompdump*
 .dbee.json
 
-tmux/plugins/
+tmux/plugins/**
 Questrade/
 uv/
 gh/
