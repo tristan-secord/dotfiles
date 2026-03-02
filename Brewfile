@@ -1,83 +1,30 @@
-tap "bufbuild/buf"
-tap "hashicorp/tap"
-tap "homebrew/services"
+# Taps
 tap "jesseduffield/lazygit"
 tap "nats-io/nats-tools"
-tap "pantsbuild/tap"
 tap "sst/tap"
-tap "tilt-dev/tap"
-brew "act"
-brew "coreutils"
-brew "asdf"
-brew "bat"
-brew "bazel"
-brew "cmake"
-brew "cocoapods"
-brew "curl"
-brew "delve"
-brew "direnv"
-brew "elixir"
-brew "ffmpeg"
-brew "fzf"
-brew "gh"
-brew "git"
-brew "grpcurl"
-brew "helm"
-brew "helmfile"
-brew "imagemagick"
-brew "jq"
-brew "k3d"
-brew "k9s"
-brew "kube-ps1"
-brew "kubectx"
-brew "lazygit"
-brew "libsodium"
-brew "neovim"
-brew "ninja"
-brew "node"
-brew "nvm"
-brew "perl"
-brew "pnpm"
-brew "postgresql@14"
-brew "postgresql@15"
-brew "prettier"
-brew "protobuf"
-brew "python@3.13"
-brew "pushpin"
-brew "pyenv"
-brew "pyright"
-brew "ripgrep"
-brew "ruff"
-brew "terragrunt"
-brew "the_silver_searcher"
-brew "tmux"
-brew "tree"
-brew "universal-ctags"
-brew "vite"
-brew "websocat"
-brew "bufbuild/buf/buf"
-brew "hashicorp/tap/terraform"
-brew "nats-io/nats-tools/nats"
-brew "sst/tap/opencode"
-brew "tilt-dev/tap/tilt"
-cask "codex"
-cask "gcloud-cli"
-cask "ngrok"
-cask "orbstack"
-cask "pantsbuild/tap/pants"
-cask "temurin@17"
-vscode "akamud.vscode-theme-onedark"
-vscode "docker.docker"
-vscode "dracula-theme.theme-dracula"
-vscode "github.copilot"
-vscode "github.copilot-chat"
-vscode "ms-azuretools.vscode-containers"
-vscode "ms-azuretools.vscode-docker"
-vscode "ms-python.debugpy"
-vscode "ms-python.python"
-vscode "ms-python.vscode-pylance"
-vscode "ms-vscode-remote.remote-containers"
-vscode "ms-vsliveshare.vsliveshare"
-vscode "teabyii.ayu"
-vscode "vscodevim.vim"
-uv "harlequin[postgres]"
+
+# zsh — .config/zsh/.zshrc, .zprofile
+brew "asdf"                       # sourced in .zshrc
+brew "direnv"                     # hooked in .zshrc
+brew "kube-ps1"                   # oh-my-zsh plugin + sourced in .zshrc
+brew "lazygit"                    # aliased as `lg` in .zshrc
+brew "nvm"                        # lazy-loaded in .zshrc (provides node/npm/pnpm)
+brew "pyenv"                      # init in .zprofile
+
+# tmux — .config/tmux/tmux.conf
+brew "fzf"                        # tmux-fzf, tmux-fzf-url, tmux-sessionx
+brew "tmux"                       # the config itself
+brew "zoxide"                     # tmux-sessionx zoxide-mode
+brew "sst/tap/opencode"           # C-o popup binding
+
+# nvim — .config/nvim/
+brew "git"                        # lazy.nvim bootstrap
+brew "neovim"                     # the config itself
+brew "prettier"                   # none-ls formatting
+brew "ripgrep"                    # fzf-lua live_grep
+brew "delve"                      # nvim-dap-go debugging
+
+# tool configs that live in .config/
+brew "gh"                         # .config/gh/
+brew "k3d"                        # .config/k3d/
+brew "nats-io/nats-tools/nats"    # .config/nats/
