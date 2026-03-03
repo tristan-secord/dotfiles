@@ -19,6 +19,7 @@ brew "sst/tap/opencode"           # C-o popup binding
 
 # nvim — .config/nvim/
 brew "git"                        # lazy.nvim bootstrap
+brew "gnupg"
 brew "neovim"                     # the config itself
 brew "prettier"                   # none-ls formatting
 brew "ripgrep"                    # fzf-lua live_grep
