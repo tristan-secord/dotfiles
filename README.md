@@ -44,6 +44,7 @@ nvim
 | `nvim/`     | Neovim config (Lua, lazy.nvim)         |
 | `tmux/`     | tmux config + TPM plugin list          |
 | `ghostty/`  | Ghostty terminal config                |
+| `k9s/`      | k9s config + Dracula skin              |
 | `opencode/` | OpenCode AI assistant config           |
 | `nats/`     | NATS messaging config                  |
 
@@ -84,6 +85,7 @@ Some tools require setup beyond `brew bundle`:
 - **OrbStack** — install from [orbstack.dev](https://orbstack.dev), it creates `~/.orbstack/shell/init.zsh`
 - **Nerd Fonts** — Ghostty config uses `Berkeley Mono Nerd Font`
 - **GPG** — set up for commit signing (`GPG_TTY` is configured in .zshrc)
+- **k9s** — macOS reads from `~/Library/Application Support/k9s/` rather than `~/.config/k9s/`; symlink it: `ln -s ~/.config/k9s ~/Library/Application\ Support/k9s`
 
 ## Production Safety
 
