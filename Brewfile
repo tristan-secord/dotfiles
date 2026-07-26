@@ -24,6 +24,7 @@ brew "neovim"                     # the config itself
 brew "prettier"                   # none-ls formatting
 brew "ripgrep"                    # fzf-lua live_grep
 brew "delve"                      # nvim-dap-go debugging
+brew "tree-sitter-cli"             # required to build nvim-treesitter parsers
 
 # tool configs that live in .config/
 brew "gh"                         # .config/gh/

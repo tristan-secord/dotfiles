@@ -10,7 +10,7 @@ My macOS dotfiles managed via git in `~/.config/`. Uses a **Catppuccin Mocha** t
 eval "$(/opt/homebrew/bin/brew shellenv)"
 
 # 2. Clone dotfiles
-git clone <repo-url> ~/.config
+git clone https://github.com/tristan-secord/dotfiles.git ~/.config
 
 # 3. Install dependencies
 brew bundle --file=~/.config/Brewfile
@@ -22,18 +22,26 @@ export EDITOR=nvim
 . "$HOME/.cargo/env"
 EOF
 
-ln -sf ~/.config/zsh/.zshrc ~/.zshrc
-ln -sf ~/.config/zsh/.zprofile ~/.zprofile
-
 # 5. Install Oh My Zsh
 sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
 
-# 6. Install tmux plugins (TPM)
-git clone https://github.com/tmux-plugins/tpm ~/.config/tmux/plugins/tpm
-# Then open tmux and press: prefix + I (C-t + I)
+#6. Symlink zsh dotfiles
 
-# 7. Open Neovim — lazy.nvim and Mason auto-install on first launch
+ln -sf ~/.config/zsh/.zshrc ~/.zshrc
+ln -sf ~/.config/zsh/.zprofile ~/.zprofile
+
+# 7. Install tmux plugins (TPM)
+git clone https://github.com/tmux-plugins/tpm ~/.config/tmux/plugins/tpm
+~/.config/tmux/plugins/tpm/bin/install_plugins
+
+# 8. Verify Tree-sitter CLI and open Neovim
+tree-sitter --version   # must be 0.26.1 or newer
 nvim
+
+# Inside Neovim, wait for lazy.nvim/Mason setup, then run:
+# :Lazy sync
+# :TSUpdate
+# :checkhealth vim.treesitter
 ```
 
 ## What's Included
@@ -70,9 +78,16 @@ brew bundle dump --file=~/.config/Brewfile --force
 
 ## Neovim
 
+- Requires Neovim 0.12 or newer
 - lazy.nvim auto-bootstraps on first launch
-- Mason auto-installs LSP servers (lua_ls, elixirls, pyright, rust_analyzer)
-- External formatters needed: `stylua`, `prettier`, `black`, `isort`, `rubocop` (included in Brewfile)
+- nvim-treesitter uses its `main` branch and the new Neovim 0.12 API
+- `tree-sitter-cli` is required to build parsers and is installed by the Brewfile
+- Tree-sitter parsers for Lua, JavaScript, HTML, and Django templates
+  are installed automatically
+- Mason auto-installs LSP servers
+  (`lua_ls`, `elixirls`, `pyright`, `rust_analyzer`)
+- External formatters needed: `stylua`, `prettier`, `black`, `isort`,
+  and `rubocop`
 - `node_host_prog` expects Node via asdf at `~/.asdf/shims/node`
 
 ## Additional Setup
