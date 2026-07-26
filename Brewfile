@@ -30,3 +30,7 @@ brew "tree-sitter-cli"             # required to build nvim-treesitter parsers
 brew "gh"                         # .config/gh/
 brew "k3d"                        # .config/k3d/
 brew "nats-io/nats-tools/nats"    # .config/nats/
+
+# claude
+cask "claude-code"
+
