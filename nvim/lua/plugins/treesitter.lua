@@ -10,8 +10,12 @@ return {
     treesitter.install({
       "lua",
       "javascript",
+      "typescript",
+      "css",
+      "scss",
       "htmldjango",
       "html",
+      "svelte",
     })
 
     vim.api.nvim_create_autocmd("FileType", {
@@ -20,6 +24,7 @@ return {
         "javascript",
         "htmldjango",
         "html",
+        "svelte",
       },
       callback = function()
         vim.treesitter.start()

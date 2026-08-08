@@ -10,7 +10,7 @@ return {
 		config = function()
 			require("mason-lspconfig").setup({
         automatic_installation = true,
-				ensure_installed = { "lua_ls", "elixirls", "pyright", "jinja_lsp" },
+				ensure_installed = { "lua_ls", "elixirls", "pyright", "jinja_lsp", "svelte" },
 			})
 		end,
 	},
@@ -60,9 +60,10 @@ return {
         capabilities = capabilities,
         filetypes = { "jinja", "htmldjango" },
       })
+      vim.lsp.config("svelte", { capabilities = capabilities })
 
       -- Enable servers (new API)
-      vim.lsp.enable({ "rust_analyzer", "lua_ls", "pyright", "elixirls", "jinja_lsp" })
+      vim.lsp.enable({ "rust_analyzer", "lua_ls", "pyright", "elixirls", "jinja_lsp", "svelte" })
 
       -- Keymaps
       vim.keymap.set("n", "K", vim.lsp.buf.hover, {})
