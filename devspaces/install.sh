@@ -110,6 +110,31 @@ fi
 
 mkdir -p "$HOME/.local/bin"
 
+# The image ships nvim 0.9.5 at /usr/bin/nvim — too old for a lazy-lock.json
+# pinned against a current nvim (0.10+ Lua/LSP APIs). Fetch a real one from
+# GitHub releases, matching your local version, and persist the extracted
+# tree in /mnt/personal so it's a one-time download, not per workspace.
+# /usr/bin is the lowest-precedence PATH entry here, so a symlink in
+# /mnt/personal/bin correctly wins over it without touching /usr/bin/nvim.
+NVIM_VERSION="v0.12.4"
+NVIM_DIR="$DOT/nvim-bin/$NVIM_VERSION"
+if [ ! -x "$NVIM_DIR/bin/nvim" ]; then
+  arch="$(uname -m)"
+  case "$arch" in
+    x86_64) nvim_arch="x86_64" ;;
+    aarch64) nvim_arch="arm64" ;;
+    *) echo "nvim: unrecognized arch '$arch', skipping upgrade" >&2; nvim_arch="" ;;
+  esac
+  if [ -n "$nvim_arch" ]; then
+    curl -Lo /tmp/nvim.tar.gz \
+      "https://github.com/neovim/neovim/releases/download/${NVIM_VERSION}/nvim-linux-${nvim_arch}.tar.gz"
+    mkdir -p "$NVIM_DIR"
+    tar -xzf /tmp/nvim.tar.gz -C "$NVIM_DIR" --strip-components=1
+    rm -f /tmp/nvim.tar.gz
+  fi
+fi
+[ -x "$NVIM_DIR/bin/nvim" ] && ln -sf "$NVIM_DIR/bin/nvim" /mnt/personal/bin/nvim
+
 # Debian/Ubuntu ships fd-find's binary as `fdfind`; plugins expect `fd`.
 if ! command -v fd >/dev/null 2>&1; then
   ln -sf "$(command -v fdfind)" "$HOME/.local/bin/fd"
