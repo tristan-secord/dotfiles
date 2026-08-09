@@ -9,6 +9,7 @@ tmux/plugins/**
 Questrade/
 uv/
 gh/
+devspaces/config.json
 
 openai.env
 
