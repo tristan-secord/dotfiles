@@ -26,6 +26,19 @@ alias gs='git status'
 alias lg='lazygit'
 EOF
 
+# .bashrc never actually sourced ~/.bashrc.d/ — the aliases above were being
+# written but never loaded by any shell. Fix that once, idempotently.
+if ! grep -q 'bashrc\.d' ~/.bashrc 2>/dev/null; then
+  cat >> ~/.bashrc <<'EOF'
+
+# Source personal alias/config snippets
+for f in ~/.bashrc.d/*.sh; do
+  [ -r "$f" ] && . "$f"
+done
+unset f
+EOF
+fi
+
 echo "Tristan devspaces dotfiles installed"
 
 # --- nvim: config + plugins from the dotfiles repo ----------------------
