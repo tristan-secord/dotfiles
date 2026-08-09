@@ -23,6 +23,7 @@ fi
 mkdir -p ~/.bashrc.d
 cat > ~/.bashrc.d/90-tristan-devspaces.sh <<'EOF'
 alias gs='git status'
+alias lg='lazygit'
 EOF
 
 echo "Tristan devspaces dotfiles installed"

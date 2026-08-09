@@ -9,6 +9,24 @@ vim.cmd 'set number'
 vim.cmd 'set relativenumber'
 vim.cmd 'set smarttab'
 vim.cmd 'set mouse=a'
+-- Over SSH there's no pbcopy/xclip to reach the *local* machine's clipboard,
+-- so route yanks through OSC 52 instead — the terminal (Ghostty allows OSC 52
+-- writes by default) picks the escape sequence off the SSH stream itself and
+-- sets the system clipboard from there. Untouched when running locally.
+if vim.env.SSH_TTY then
+  vim.g.clipboard = {
+    name = "OSC 52",
+    copy = {
+      ["+"] = require("vim.ui.clipboard.osc52").copy("+"),
+      ["*"] = require("vim.ui.clipboard.osc52").copy("*"),
+    },
+    paste = {
+      ["+"] = require("vim.ui.clipboard.osc52").paste("+"),
+      ["*"] = require("vim.ui.clipboard.osc52").paste("*"),
+    },
+  }
+end
+
 vim.cmd 'set clipboard=unnamed'
 
 vim.g.mapleader = " "
