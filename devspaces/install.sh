@@ -162,6 +162,25 @@ if [ ! -x /mnt/personal/bin/lazygit ]; then
   fi
 fi
 
+# nvim-treesitter (main branch) shells out to a `tree-sitter` CLI binary to
+# compile parsers — not packaged in apt, not the same thing as the
+# nvim-treesitter *plugin*. Persistent binary, same pattern as lazygit.
+if [ ! -x /mnt/personal/bin/tree-sitter ]; then
+  arch="$(uname -m)"
+  case "$arch" in
+    x86_64) ts_arch="x64" ;;
+    aarch64) ts_arch="arm64" ;;
+    *) echo "tree-sitter: unrecognized arch '$arch', skipping" >&2; ts_arch="" ;;
+  esac
+  if [ -n "$ts_arch" ]; then
+    curl -Lo /tmp/tree-sitter.gz \
+      "https://github.com/tree-sitter/tree-sitter/releases/latest/download/tree-sitter-linux-${ts_arch}.gz"
+    gunzip -f /tmp/tree-sitter.gz
+    install /tmp/tree-sitter /mnt/personal/bin/tree-sitter
+    rm -f /tmp/tree-sitter
+  fi
+fi
+
 # Make sure ~/.local/bin (fd) is on PATH for future shells.
 path_line='export PATH="$HOME/.local/bin:$PATH"'
 grep -qxF "$path_line" "$HOME/.bashrc" 2>/dev/null || echo "$path_line" >> "$HOME/.bashrc"
