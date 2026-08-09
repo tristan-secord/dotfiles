@@ -1,6 +1,11 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
+# Don't rely on however this script gets invoked (workspace-utils, a login
+# shell, a bare ssh command, ...) to already have a sane PATH — dropbear
+# sessions especially strip it down to /usr/bin:/bin. Guarantee it here.
+export PATH="/usr/local/bin:/usr/local/sbin:/mnt/personal/bin:$HOME/.local/bin:$PATH"
+
 DOT=/mnt/personal/dotfiles
 
 mkdir -p ~/.config ~/.claude /mnt/personal/bin
@@ -82,11 +87,13 @@ link_persistent_dir ".local/share/nvim"
 
 # --- CLI tools your nvim plugins shell out to ---------------------------
 
+# node/npm/fd already ship in the image at /usr/local/bin — only fzf and
+# ctags are genuinely missing. Not listing node/npm here on purpose: apt's
+# versions are older and installing them pulls in ~370 transitive packages
+# for nothing.
 declare -A APT_PKG_FOR_BIN=(
   [fd]=fd-find
   [fzf]=fzf
-  [node]=nodejs
-  [npm]=npm
   [ctags]=universal-ctags
 )
 missing_pkgs=()
@@ -106,11 +113,10 @@ if ! command -v fd >/dev/null 2>&1; then
 fi
 
 # lazygit isn't packaged in apt at all. Its binary is a plain portable
-# executable, so it goes in the *persistent* /mnt/personal/bin (already on
-# PATH via the block above) — downloaded once, ever, not per workspace.
-# Check the persistent path directly rather than `command -v`, since PATH
-# only picks up /mnt/personal/bin after .bashrc is re-sourced.
-if [ ! -x /mnt/personal/bin/lazygit ] && ! command -v lazygit >/dev/null 2>&1; then
+# executable, so it goes in the *persistent* /mnt/personal/bin — downloaded
+# once, ever, not per workspace. Check that exact path rather than
+# `command -v`, so a stray leftover copy elsewhere on PATH can't mask it.
+if [ ! -x /mnt/personal/bin/lazygit ]; then
   arch="$(uname -m)"
   case "$arch" in
     x86_64) lg_arch="x86_64" ;;
