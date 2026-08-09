@@ -33,9 +33,12 @@ CONFIG_REPO="$DOT/config"       # your actual dotfiles git repo
 DATA_DIR="$DOT/nvim-data"       # installed plugins, NOT git-managed
 
 # /mnt/personal shows files as owned by `nobody` regardless of who wrote
-# them, which trips git's dubious-ownership check on every command below —
-# not just the first clone.
-git config --global --add safe.directory "$CONFIG_REPO"
+# them, which trips git's dubious-ownership check on every git command
+# under it — not just the dotfiles clone, but every individual plugin
+# lazy.nvim installs under nvim-data too (each is its own repo). This is
+# single-user, personal storage, so the ownership check isn't guarding a
+# real trust boundary here — blanket-exempt it rather than list every path.
+git config --global --add safe.directory "*"
 
 if [ -d "$CONFIG_REPO/.git" ]; then
   git -C "$CONFIG_REPO" pull --ff-only
