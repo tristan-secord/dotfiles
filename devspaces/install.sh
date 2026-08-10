@@ -83,6 +83,27 @@ if [ -f "$CONFIG_REPO/devspaces/claude/CLAUDE.personal.md" ]; then
   cp "$CONFIG_REPO/devspaces/claude/CLAUDE.personal.md" /mnt/personal/CLAUDE.personal.md
 fi
 
+# --- devspaces: PR/CI workspace hooks --------------------------------------
+
+# Hook scripts (pr-status-changed/*, shutdown/backup-sessions.py, lib/) are
+# git-managed here and symlinked in per subdirectory — NOT the whole
+# /mnt/personal/hooks root, since `devspaces hooks enable --global` writes its
+# own config.json directly there, which must stay untracked local state, not
+# something a `git pull` could stomp on. Iterate every subdir under hooks/
+# (lib/ included — devspaces ignores it, it's not a known event name) so a
+# new event family devspaces adds later needs no change here.
+mkdir -p /mnt/personal/hooks
+for _hook_dir in "$CONFIG_REPO"/devspaces/hooks/*/; do
+  _hook_name="$(basename "$_hook_dir")"
+  ln -sfn "$_hook_dir" "/mnt/personal/hooks/$_hook_name"
+done
+unset _hook_dir _hook_name
+
+# Hooks are disabled everywhere until explicitly enabled (devspaces' own
+# safety default) — this only makes them available, it doesn't turn them on.
+# Enable per-workspace with `devspaces hooks enable <event>/<name>`, or
+# everywhere with `--global`.
+
 # Symlink $HOME/<rel> to a persistent path, migrating any pre-existing
 # real directory in on the very first run.
 link_persistent_dir() {
