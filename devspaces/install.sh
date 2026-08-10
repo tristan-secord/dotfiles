@@ -59,10 +59,28 @@ if [ -d "$CONFIG_REPO/.git" ]; then
 else
   # Sparse + cone mode: only nvim/ and devspaces/ get checked out, not
   # every other tool's config that happens to live in the same repo.
+  # devspaces/claude/ (skills + CLAUDE.personal.md) rides along under the
+  # devspaces/ pattern — cone mode includes subdirectories automatically.
   gh repo clone tristan-secord/dotfiles "$CONFIG_REPO" -- --no-checkout
   git -C "$CONFIG_REPO" sparse-checkout init --cone
   git -C "$CONFIG_REPO" sparse-checkout set nvim devspaces
   git -C "$CONFIG_REPO" checkout
+fi
+
+# --- Claude Code: personal skills + instructions --------------------------
+
+# Personal skills (grill-me, to-spec, to-tickets, execute, ...) — plain files
+# we own and edit directly (a few started as a copy from mattpocock/skills,
+# no update tracking to it) — symlinked into place so the `git pull` above
+# picks up new/edited skills without a re-run.
+ln -sfn "$CONFIG_REPO/devspaces/claude/skills" "$HOME/.claude/skills"
+
+# Personal instructions. Source of truth is
+# $CONFIG_REPO/devspaces/claude/CLAUDE.personal.md — cp'd (not symlinked), so
+# editing the generated copy in a live session doesn't silently become "the"
+# source of truth. Edit the repo copy, not this one.
+if [ -f "$CONFIG_REPO/devspaces/claude/CLAUDE.personal.md" ]; then
+  cp "$CONFIG_REPO/devspaces/claude/CLAUDE.personal.md" /mnt/personal/CLAUDE.personal.md
 fi
 
 # Symlink $HOME/<rel> to a persistent path, migrating any pre-existing

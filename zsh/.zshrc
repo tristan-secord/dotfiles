@@ -52,10 +52,6 @@ alias tas="tmux attach -t"
 alias td="tmux kill-session -t"
 alias tls="tmux list-sessions"
 
-# devspaces-work: create a canals workspace + a tmux session for it
-# (left pane SSH'd in running claude, right pane local shell)
-dsw() { ~/bin/devspaces-work "$@"; }
-
 # Random Aliases
 alias uuidcp="python -c 'import uuid; print(str(uuid.uuid4()), end=\"\")' | pbcopy"
 
