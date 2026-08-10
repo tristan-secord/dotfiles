@@ -95,9 +95,16 @@ fi
 mkdir -p /mnt/personal/hooks
 for _hook_dir in "$CONFIG_REPO"/devspaces/hooks/*/; do
   _hook_name="$(basename "$_hook_dir")"
-  ln -sfn "$_hook_dir" "/mnt/personal/hooks/$_hook_name"
+  _dest="/mnt/personal/hooks/$_hook_name"
+  # A pre-existing REAL directory at $_dest would make `ln -sfn` create the
+  # symlink *inside* it instead of replacing it (-n only guards against the
+  # target being a symlink-to-a-directory, not a real one) — clear it first.
+  if [ -e "$_dest" ] && [ ! -L "$_dest" ]; then
+    rm -rf "$_dest"
+  fi
+  ln -sfn "$_hook_dir" "$_dest"
 done
-unset _hook_dir _hook_name
+unset _hook_dir _hook_name _dest
 
 # Hooks are disabled everywhere until explicitly enabled (devspaces' own
 # safety default) — this only makes them available, it doesn't turn them on.
