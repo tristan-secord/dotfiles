@@ -1,6 +1,6 @@
 ---
 name: execute
-description: Dispatch the tickets from /to-tickets as parallel background agents in isolated git worktrees, each producing its own draft PR, stacked in dependency order and titled "[Part N] ...".
+description: Dispatch the tickets from /to-tickets as parallel background agents in isolated git worktrees, each producing its own draft PR, stacked in dependency order and titled with the service(s) it touches, e.g. "[ERP] ...".
 disable-model-invocation: true
 ---
 
@@ -28,7 +28,7 @@ Show the user:
 
 - The full ticket list in dependency order.
 - Which tickets have no blockers in common — i.e. which ones can run in the same wave, in parallel.
-- The resulting PR chain, e.g. `[Part 1]` ← `[Part 2]` (stacked on Part 1) ← `[Part 3]` (stacked on Part 1, independent of Part 2) — draw the actual shape, not just a flat list.
+- The resulting PR chain by ticket number, e.g. `01` ← `02` (stacked on 01) ← `03` (stacked on 01, independent of 02) — draw the actual shape, not just a flat list. Note that each PR's title is tagged by the service it touches (see step 6), not by this chain position.
 - The branch names you'll use: `<feature-slug>-part-<NN>`.
 
 This is a real dispatch of background agents that will commit, push, and open real draft PRs on your behalf — get explicit confirmation before step 3.
@@ -60,7 +60,7 @@ Don't poll — background agents notify you when they finish; never sleep or pro
 
 ## 6. Report
 
-Once every ticket has a draft PR, give the user the full chain: PR links in merge order, and an explicit note on merge order — this project's stacking convention means merging out of order will show unrelated diffs in the later PRs, so `[Part 1]` must merge before `[Part 2]`'s base is valid, and so on.
+Once every ticket has a draft PR, give the user the full chain: PR links in merge order, and an explicit note on merge order — this project's stacking convention means merging out of order will show unrelated diffs in the later PRs, so ticket 01's PR must merge before ticket 02's base is valid, and so on. PR titles carry no ordering information (they're tagged by service, per step 6) — merge order lives only in this report and in each PR's stacked base.
 
 ## Seed prompt template
 
@@ -112,7 +112,16 @@ Once the implementation itself is done, in order:
 3. Commit anything those two steps changed (still subject to the
    `/canals:review-local-changes` rule above).
 4. `/canals:review-pr` — the final gate. Address what it flags.
-5. Push your branch and open a **draft** PR titled exactly: `[Part [NN]] [title]`
+5. Push your branch and open a **draft** PR titled: `[<SERVICE>] [title]`
+   - `<SERVICE>` is the top-level module(s) under `modules/` (or other
+     top-level directory) your diff actually touches — check with
+     `git diff --stat [base-ref]...HEAD`, not the ticket description, since
+     the two can diverge. Use the name the team already uses for it:
+     upper-cased if it's an acronym (`ERP`, `AP`, `AR`), Title-Cased
+     otherwise (`Sourcing`, `Payments`). Touches more than one module? Join
+     them, e.g. `[ERP+AP]`. This is a monorepo — the tag is what makes the
+     PR list scannable, so it must name the service, never the ticket
+     number, "Part N", or any other internal sequencing label.
    - Base the PR on `[base-branch]` (see above).
    - In the body, note: "Stacked on #<blocker's PR number> — merge that first."
      (omit if no blocker)

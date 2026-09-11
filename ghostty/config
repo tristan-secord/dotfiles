@@ -10,6 +10,11 @@ adjust-cell-height = 25%
 mouse-hide-while-typing = true
 mouse-scroll-multiplier = 2
 
+# Let OSC 52 (used by nvim's remote-clipboard yank over SSH) actually
+# read/write the system clipboard instead of being silently ignored.
+clipboard-read = allow
+clipboard-write = allow
+
 window-padding-balance = true
 macos-titlebar-style = transparent
 window-colorspace = "display-p3"

@@ -194,6 +194,41 @@ fi
 # Enable devspaces completion
 source <(devspaces completion zsh)
 
+# Tab-completion for `devs` — subcommands, then workspace slugs sourced from
+# devspaces' own completion machinery above, so `devs work <tab>` matches
+# whatever `devspaces ws start <tab>` already offers.
+_devs() {
+  local -a comps
+  local IFS=$'\n'
+  local cur="${words[CURRENT]}"
+  local prev="${words[CURRENT-1]}"
+
+  if [[ $CURRENT -eq 2 ]]; then
+    compadd work done connect list task
+    return
+  fi
+
+  case "${words[2]}" in
+    work)
+      if [[ "$prev" == --title ]]; then
+        return
+      elif [[ "$prev" == --ai ]]; then
+        compadd -- claude codex
+      elif [[ "$cur" == --* ]]; then
+        compadd -- --title --ai
+      else
+        comps=($(devspaces __complete ws get "$cur" 2>/dev/null))
+        compadd -- $comps
+      fi
+      ;;
+    done)
+      comps=($(devspaces __complete ws get "$cur" 2>/dev/null))
+      compadd -- $comps
+      ;;
+  esac
+}
+compdef _devs devs
+
 [[ -f "$HOME/.deno/env" ]] && . "$HOME/.deno/env"
 
 
