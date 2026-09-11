@@ -75,6 +75,24 @@ fi
 # picks up new/edited skills without a re-run.
 ln -sfn "$CONFIG_REPO/devspaces/claude/skills" "$HOME/.claude/skills"
 
+# Same skills, shared into Codex too — one SKILL.md written once, usable
+# from either frontend. Unlike Claude's dir above, $HOME/.codex/skills is
+# NOT swapped wholesale: Codex populates its own .system/ subdir there with
+# bundled skills (skill-creator, review-agent, ...) on first run, and
+# blowing that away with a single directory symlink would take those with
+# it. Symlink one skill at a time instead, so .system/ (and anything else
+# already living there) is left alone. Each skill that sets Claude's
+# `disable-model-invocation: true` carries a matching `agents/openai.yaml`
+# (`policy.allow_implicit_invocation: false`) for Codex's equivalent —
+# Codex reads its invocation policy from that file, not from SKILL.md's
+# frontmatter, and ignores the Claude-only key there.
+mkdir -p "$HOME/.codex/skills"
+for _skill_dir in "$CONFIG_REPO"/devspaces/claude/skills/*/; do
+  _skill_name="$(basename "$_skill_dir")"
+  ln -sfn "$_skill_dir" "$HOME/.codex/skills/$_skill_name"
+done
+unset _skill_dir _skill_name
+
 # Personal instructions. Source of truth is
 # $CONFIG_REPO/devspaces/claude/CLAUDE.personal.md — cp'd (not symlinked), so
 # editing the generated copy in a live session doesn't silently become "the"

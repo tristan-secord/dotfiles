@@ -1,0 +1,5 @@
+# Codex's mirror of this skill's SKILL.md `disable-model-invocation: true` —
+# Claude ignores this file (it only reads SKILL.md), Codex reads SKILL.md
+# for the shared instructions but takes its own invocation policy from here.
+policy:
+  allow_implicit_invocation: false
