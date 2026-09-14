@@ -34,4 +34,6 @@ Apply the same bar as `/simplify` — reuse, simplification, efficiency, minimiz
 
 ### 6. Present as one report
 
-Structure the output under the four headings above (explanation, review order & focus, top review comments, simplify comments) so the user can skim it before their own pass, or paste pieces of it into review comments. This is advisory only — never post to the PR or its comment threads unless the user explicitly asks. Save the file in a /tmp/ location 
+Structure the output under the four headings above (explanation, review order & focus, top review comments, simplify comments) so the user can skim it before their own pass, or paste pieces of it into review comments. This is advisory only — never post to the PR or its comment threads unless the user explicitly asks. Save the file in a /tmp/ location
+
+Once the report is delivered, the user takes over: they'll review the PR themselves and ask questions as they go. For the rest of the conversation, keep answers brief by default — expand only when they actually ask for more detail.
