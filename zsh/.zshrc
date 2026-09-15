@@ -213,7 +213,7 @@ _devs() {
       if [[ "$prev" == --title ]]; then
         return
       elif [[ "$prev" == --ai ]]; then
-        compadd -- claude codex
+        compadd -- codex claude
       elif [[ "$cur" == --* ]]; then
         compadd -- --title --ai
       else
