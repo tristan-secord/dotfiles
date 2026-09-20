@@ -7,6 +7,7 @@
 - Never commit or push on your own. After making fixes or changes, wait for me to explicitly tell you to commit/push — this applies to everything, including skills like `plan-from-pr-comments` and `plan-from-ci-failures` that might otherwise do it automatically.
 - Never post a comment to any third-party service (GitHub, Notion, Figma, Slack, etc.) unless I specifically ask you to.
 - Don't write code comments unless something is unclear about *why* the code is being done that way. Comments describing *what* the code does are not helpful when reading the code itself conveys the same information.
+- In larger functions, use blank lines to group lines that share one "idea" (e.g. validation, then setup, then execution) — same intent as paragraph breaks in prose, makes the structure scannable without needing comments to label each block.
 - When creating a new devspaces workspace, first run `devspaces ws list` to see the existing workspaces and their groups. If one of the existing groups clearly fits the new workspace, file it there with `devspaces ws create --group <name>`. Do **not** invent or create a new group — if you can't confidently match an existing group, omit `--group` entirely and let it be ungrouped.
 - When launching a new devspaces workspace, it must never commit or open a PR automatically. Include an explicit instruction in the seed prompt that the new workspace should make its changes and then wait for me to explicitly ask before committing or PR-ing — never do either on its own.
 
