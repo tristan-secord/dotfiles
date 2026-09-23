@@ -13,7 +13,9 @@ vim.cmd 'set mouse=a'
 -- so route yanks through OSC 52 instead — the terminal (Ghostty allows OSC 52
 -- writes by default) picks the escape sequence off the SSH stream itself and
 -- sets the system clipboard from there. Untouched when running locally.
-if vim.env.SSH_TTY then
+-- Checks SSH_CONNECTION too: tmux forwards that on attach but not SSH_TTY,
+-- so SSH_TTY alone misses panes running inside a devspace's tmux session.
+if vim.env.SSH_TTY or vim.env.SSH_CONNECTION then
   vim.g.clipboard = {
     name = "OSC 52",
     copy = {
